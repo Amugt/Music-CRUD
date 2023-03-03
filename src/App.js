@@ -1,24 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Musics from "./components/Musics";
+import MusicForm from "./components/common/MusicForm";
+import NotFound from "./components/common/NotFound";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      {/* <Route path="/musics/:id" element={<MusicForm />} /> */}
+      <Route path="/musics" element={<Musics />} />
+      <Route path="/not-found" element={<NotFound />} />
+      <Route path="/" element={<Musics />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 
