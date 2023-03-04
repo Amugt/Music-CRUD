@@ -23,22 +23,22 @@ class Musics extends Component {
     return nextProps.musics !== this.props.musics;
   }
 
-  // deletingMusic = async (id) => {
-  //   const { deleteMusicRequest, deleteMusicSuccess, deleteMusicFailure } =
-  //     this.props;
-  //   const originalData = [...this.props.musics];
-  //   deleteMusicRequest();
-  //   try {
-  //     const musics = originalData.filter((music) => music.id !== id);
-  //     deleteMusicSuccess(id);
-  //     await deleteMusicRequest(id);
-  //   } catch (error) {
-  //     console.log(error);
-  //     deleteMusicFailure(error.message);
-  //     // Instead of using this.setState, dispatch an action to update the state
-  //     this.props.getMusicSuccess(originalData);
-  //   }
-  // };
+  deletingMusic = async (id) => {
+    const { deleteMusicRequest, deleteMusicSuccess, deleteMusicFailure } =
+      this.props;
+    const originalData = [...this.props.musics];
+    deleteMusicRequest();
+    try {
+      const musics = originalData.filter((music) => music.id !== id);
+      deleteMusicSuccess(id);
+      await deleteMusicRequest(id);
+    } catch (error) {
+      console.log(error);
+      deleteMusicFailure(error.message);
+      // Instead of using this.setState, dispatch an action to update the state
+      this.props.getMusicSuccess(originalData);
+    }
+  };
 
   render() {
     const { musics } = this.props;
