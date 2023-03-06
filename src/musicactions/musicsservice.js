@@ -13,11 +13,11 @@ const musicSlice = createSlice({
     getMusicRequest: (state) => {
       state.loading = true;
       state.error = null;
+      state.selectedMusic = "";
     },
     getMusicSuccess: (state, action) => {
       state.loading = false;
       state.data = action.payload;
-      console.log(state.data);
     },
     getMusicFailure: (state, action) => {
       state.loading = false;
@@ -31,7 +31,6 @@ const musicSlice = createSlice({
     addMusicSuccess: (state, action) => {
       state.loading = false;
       state.data.push(action.payload);
-      console.log(action.payload);
     },
     addMusicFailure: (state, action) => {
       state.loading = false;

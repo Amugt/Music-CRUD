@@ -25,7 +25,7 @@ class Musics extends Component {
 
   deletingMusic = async (id) => {
     const originalData = [...this.props.musics];
-    console.log(originalData);
+
     this.props.deleteMusicRequest(id);
     try {
       const delmusic = originalData.filter((music) => music.id !== id);

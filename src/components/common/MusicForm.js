@@ -2,21 +2,18 @@ import React, { useState, useEffect } from "react";
 import joi from "joi";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import { allmusic } from "../../musicactions/musicsservice";
+
 import {
   addMusicRequest,
-  addMusicSuccess,
   addMusicFailure,
   updateMusicRequest,
-  updateMusicSuccess,
   updateMusicFailure,
   getMusicByIdRequest,
-  getMusicByIdSuccess,
-  getMusicByIdFailure,
 } from "../../musicactions/musicsservice";
 
 const MusicForm = () => {
-  const [data, setData] = useState({ title: "", artist: "" });
+  const [data, setData] = useState({ title: "", artist: "", genre: "" });
+
   const [errors, setErrors] = useState({});
   const { id } = useParams();
   const navigate = useNavigate();
@@ -26,16 +23,15 @@ const MusicForm = () => {
   useEffect(() => {
     if (id !== "new") {
       dispatch(getMusicByIdRequest(id));
-      //   const { title, artist } = selectedMusic;
-      //   setData({ title, artist });
-      console.log(selectedMusic);
-
-      // .catch((err) => {
-      //   console.log(err);
-      //   dispatch(getMusicByIdFailure(err.message));
-      // });
     }
   }, [dispatch, id]);
+
+  useEffect(() => {
+    if (selectedMusic) {
+      const { title, artist, genre } = selectedMusic;
+      setData({ title, artist, genre });
+    }
+  }, [selectedMusic]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -51,7 +47,8 @@ const MusicForm = () => {
       if (id === "new") {
         dispatch(addMusicRequest(music));
       } else {
-        dispatch(updateMusicRequest(id, music));
+        const updated = [id, music];
+        dispatch(updateMusicRequest(updated));
       }
 
       navigate("/musics");
@@ -69,7 +66,7 @@ const MusicForm = () => {
     const { name, value } = event.target;
     setData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: value || "",
     }));
   };
 
@@ -85,7 +82,16 @@ const MusicForm = () => {
   const schema = {
     title: joi.string().required(),
     artist: joi.string().required(),
+    genre: joi.string().required(),
   };
+
+  const genreOptions = [
+    { value: "pop", label: "Pop" },
+    { value: "rock", label: "Rock" },
+    { value: "jazz", label: "Jazz" },
+    { value: "blues", label: "Blues" },
+    { value: "country", label: "Country" },
+  ];
 
   return (
     <div className="Full Screen">
@@ -118,14 +124,35 @@ const MusicForm = () => {
             )}
           </div>
           <div>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={Object.keys(errors).length > 0}
+            <label htmlFor="genre" className="form-label">
+              Genre
+            </label>
+            <select
+              id="genre"
+              name="genre"
+              className="form-select"
+              value={data.genre}
+              onChange={handleChange}
+              required
             >
-              {id === "new" ? "Add Music" : "Update"}
-            </button>
+              <option value="">Select Genre</option>
+              <option value="Rock">Rock</option>
+              <option value="Pop">Pop</option>
+              <option value="Hip Hop">Hip Hop</option>
+              <option value="Jazz">Jazz</option>
+              <option value="Electronic">Electronic</option>
+            </select>
+            {errors.genre && (
+              <div className="alert alert-danger">{errors.genre}</div>
+            )}
           </div>
+          <button
+            type="submit"
+            className=" "
+            disabled={Object.keys(errors).length > 0}
+          >
+            {id === "new" ? "Add Music" : "Update"}
+          </button>
         </div>
       </form>
     </div>
