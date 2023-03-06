@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { allmusic } from "../musicactions/musicsservice";
 
 import {
   getMusicRequest,
@@ -14,9 +15,8 @@ import {
 import "./Musics.css";
 
 class Musics extends Component {
-  componentDidMount() {
-    const { getMusicRequest } = this.props;
-    getMusicRequest();
+  async componentDidMount() {
+    await this.props.getMusicRequest();
   }
 
   shouldComponentUpdate(nextProps) {
@@ -24,18 +24,14 @@ class Musics extends Component {
   }
 
   deletingMusic = async (id) => {
-    const { deleteMusicRequest, deleteMusicSuccess, deleteMusicFailure } =
-      this.props;
     const originalData = [...this.props.musics];
-    deleteMusicRequest();
+    console.log(originalData);
+    this.props.deleteMusicRequest(id);
     try {
-      const musics = originalData.filter((music) => music.id !== id);
-      deleteMusicSuccess(id);
-      await deleteMusicRequest(id);
+      const delmusic = originalData.filter((music) => music.id !== id);
     } catch (error) {
       console.log(error);
-      deleteMusicFailure(error.message);
-      // Instead of using this.setState, dispatch an action to update the state
+      this.props.deleteMusicFailure(error.message);
       this.props.getMusicSuccess(originalData);
     }
   };
@@ -78,7 +74,7 @@ class Musics extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  musics: state.music ? state.music.data : [],
+  musics: allmusic(state).data, // select the music data from the state
 });
 
 const mapDispatchToProps = {

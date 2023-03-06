@@ -1,118 +1,135 @@
-// import React, { useState, useEffect } from "react";
-// import joi from "joi";
+import React, { useState, useEffect } from "react";
+import joi from "joi";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
+import { allmusic } from "../../musicactions/musicsservice";
+import {
+  addMusicRequest,
+  addMusicSuccess,
+  addMusicFailure,
+  updateMusicRequest,
+  updateMusicSuccess,
+  updateMusicFailure,
+  getMusicByIdRequest,
+  getMusicByIdSuccess,
+  getMusicByIdFailure,
+} from "../../musicactions/musicsservice";
 
-// import {
-//   getMusicById,
-//   addMusic,
-//   updateMusic,
-// } from "../../musicactions/musicsservice";
-// import { useNavigate, useParams } from "react-router-dom";
+const MusicForm = () => {
+  const [data, setData] = useState({ title: "", artist: "" });
+  const [errors, setErrors] = useState({});
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading, error, selectedMusic } = useSelector((state) => state.music);
 
-// const MusicForm = () => {
-//   const [data, setData] = useState({ title: "", artist: "" });
-//   const [errors, setErrors] = useState({});
-//   const [param, setParam] = useState("");
-//   const schema = {
-//     title: joi.string().required(),
-//     artist: joi.string().required(),
-//   };
-//   const navigate = useNavigate();
-//   const { id } = useParams();
+  useEffect(() => {
+    if (id !== "new") {
+      dispatch(getMusicByIdRequest(id));
+      //   const { title, artist } = selectedMusic;
+      //   setData({ title, artist });
+      console.log(selectedMusic);
 
-//   useEffect(() => {
-//     setParam(id);
-//     if (id !== "new") {
-//       try {
-//         const fetchData = async () => {
-//           const { data: music } = await getMusicById(id);
-//           const newData = {
-//             title: music.title,
-//             artist: music.artist,
-//           };
-//           setData(newData);
-//         };
-//         fetchData();
-//       } catch (error) {
-//         console.log(error);
-//       }
-//     }
-//   }, [id]);
+      // .catch((err) => {
+      //   console.log(err);
+      //   dispatch(getMusicByIdFailure(err.message));
+      // });
+    }
+  }, [dispatch, id]);
 
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-//     const errors = validate();
-//     setErrors(errors || {});
-//     if (errors) return;
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const errors = validate();
+    setErrors(errors || {});
+    if (errors) return;
 
-//     try {
-//       let response;
-//       if (param === "new") response = await addMusic(data);
-//       else response = await updateMusic(param, data);
-//       console.log(param, data);
-//       navigate("/musics");
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
+    const music = {
+      ...data,
+    };
 
-//   const handleChange = (event) => {
-//     const { name, value } = event.target;
-//     const newData = { ...data };
-//     newData[name] = value;
-//     setData(newData);
-//   };
+    try {
+      if (id === "new") {
+        dispatch(addMusicRequest(music));
+      } else {
+        dispatch(updateMusicRequest(id, music));
+      }
 
-//   const validate = () => {
-//     const { error } = joi.object(schema).validate(data, { abortEarly: false });
-//     if (!error) return null;
+      navigate("/musics");
+    } catch (error) {
+      console.log(error);
+      if (id === "new") {
+        dispatch(addMusicFailure(error));
+      } else {
+        dispatch(updateMusicFailure(error));
+      }
+    }
+  };
 
-//     const errors = {};
-//     for (let item of error.details) errors[item.path[0]] = item.message;
-//     return errors;
-//   };
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
-//   return (
-//     <div className="Full Screen">
-//       <form onSubmit={handleSubmit}>
-//         <div>
-//           Music details
-//           <div>
-//             <input
-//               type="text"
-//               name="title"
-//               className="input"
-//               value={data.title}
-//               onChange={handleChange}
-//             />
-//             {errors.title && (
-//               <div className="alert alert-danger">{errors.title}</div>
-//             )}
-//           </div>
-//           <div>
-//             <input
-//               type="text"
-//               name="artist"
-//               className="input"
-//               value={data.artist}
-//               onChange={handleChange}
-//             />
-//             {errors.artist && (
-//               <div className="alert alert-danger">{errors.artist}</div>
-//             )}
-//           </div>
-//           <div>
-//             <button
-//               type="submit"
-//               className="btn btn-primary"
-//               disabled={Object.keys(errors).length > 0}
-//             >
-//               {param === "new" ? "Add Music" : "Update"}
-//             </button>
-//           </div>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// };
+  const validate = () => {
+    const { error } = joi.object(schema).validate(data, { abortEarly: false });
+    if (!error) return null;
 
-// export default MusicForm;
+    const errors = {};
+    for (let item of error.details) errors[item.path[0]] = item.message;
+    return errors;
+  };
+
+  const schema = {
+    title: joi.string().required(),
+    artist: joi.string().required(),
+  };
+
+  return (
+    <div className="Full Screen">
+      {loading && <p>{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <div>
+          Music details
+          <div>
+            <input
+              type="text"
+              name="title"
+              className="input"
+              value={data.title}
+              onChange={handleChange}
+            />
+            {errors.title && (
+              <div className="alert alert-danger">{errors.title}</div>
+            )}
+          </div>
+          <div>
+            <input
+              type="text"
+              name="artist"
+              className="input"
+              value={data.artist}
+              onChange={handleChange}
+            />
+            {errors.artist && (
+              <div className="alert alert-danger">{errors.artist}</div>
+            )}
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={Object.keys(errors).length > 0}
+            >
+              {id === "new" ? "Add Music" : "Update"}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default MusicForm;

@@ -8,7 +8,7 @@ import "./App.css";
 function App() {
   return (
     <Routes>
-      {/* <Route path="/musics/:id" element={<MusicForm />} /> */}
+      <Route path="/musics/:id" element={<MusicForm />} />
       <Route path="/musics" element={<Musics />} />
       <Route path="/not-found" element={<NotFound />} />
       <Route path="/" element={<Musics />} />

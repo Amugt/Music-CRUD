@@ -1,5 +1,4 @@
 import { put, call, takeLatest } from "redux-saga/effects";
-
 import axios from "axios";
 import {
   getMusicRequest,
@@ -14,6 +13,9 @@ import {
   deleteMusicRequest,
   deleteMusicSuccess,
   deleteMusicFailure,
+  getMusicByIdRequest,
+  getMusicByIdSuccess,
+  getMusicByIdFailure,
 } from "../musicactions/musicsservice";
 
 const apiURL = "http://localhost:3004/Musics";
@@ -31,7 +33,6 @@ function* fetchMusicData() {
 // Redux Saga generator function for adding new music
 function* addNewMusic(action) {
   try {
-    yield put(addMusicRequest());
     const response = yield call(axios.post, apiURL, action.payload);
     yield put(addMusicSuccess(response.data));
   } catch (error) {
@@ -57,11 +58,20 @@ function* updateExistingMusic(action) {
 // Redux Saga generator function for deleting music
 function* deleteMusic(action) {
   try {
-    yield put(deleteMusicRequest());
     yield call(axios.delete, `${apiURL}/${action.payload}`);
     yield put(deleteMusicSuccess(action.payload));
   } catch (error) {
     yield put(deleteMusicFailure(error.message));
+  }
+}
+
+// Redux Saga generator function for fetching music data by ID
+function* fetchMusicDataById(action) {
+  try {
+    const response = yield call(axios.get, `${apiURL}/${action.payload}`);
+    yield put(getMusicByIdSuccess(response.data));
+  } catch (error) {
+    yield put(getMusicByIdFailure(error.message));
   }
 }
 
@@ -71,6 +81,7 @@ function* musicWatcher() {
   yield takeLatest(addMusicRequest.type, addNewMusic);
   yield takeLatest(updateMusicRequest.type, updateExistingMusic);
   yield takeLatest(deleteMusicRequest.type, deleteMusic);
+  yield takeLatest(getMusicByIdRequest.type, fetchMusicDataById);
 }
 
 export default musicWatcher;

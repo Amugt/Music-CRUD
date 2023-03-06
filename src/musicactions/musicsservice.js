@@ -7,6 +7,7 @@ const musicSlice = createSlice({
     data: [],
     loading: false,
     error: null,
+    selectedMusic: [],
   },
   reducers: {
     getMusicRequest: (state) => {
@@ -21,6 +22,7 @@ const musicSlice = createSlice({
     getMusicFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+      console.log(state.error);
     },
     addMusicRequest: (state) => {
       state.loading = true;
@@ -29,10 +31,10 @@ const musicSlice = createSlice({
     addMusicSuccess: (state, action) => {
       state.loading = false;
       state.data.push(action.payload);
+      console.log(action.payload);
     },
     addMusicFailure: (state, action) => {
       state.loading = false;
-      state.error = action.payload;
     },
     updateMusicRequest: (state) => {
       state.loading = true;
@@ -60,6 +62,18 @@ const musicSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    getMusicByIdRequest: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    getMusicByIdSuccess: (state, action) => {
+      state.loading = false;
+      state.selectedMusic = action.payload;
+    },
+    getMusicByIdFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -68,6 +82,9 @@ export const {
   getMusicRequest,
   getMusicSuccess,
   getMusicFailure,
+  getMusicByIdRequest,
+  getMusicByIdSuccess,
+  getMusicByIdFailure,
   addMusicRequest,
   addMusicSuccess,
   addMusicFailure,
@@ -78,5 +95,7 @@ export const {
   deleteMusicSuccess,
   deleteMusicFailure,
 } = musicSlice.actions;
+
+export const allmusic = (state) => state.music;
 
 export default musicSlice.reducer;
