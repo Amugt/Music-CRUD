@@ -18,7 +18,8 @@ import {
   getMusicByIdFailure,
 } from "../musicactions/musicsservice";
 
-const apiURL = "http://localhost:3004/Musics";
+const apiURL =
+  "https://my-json-server.typicode.com/Amugt/json-placeholder/Musics";
 
 function* fetchMusicData() {
   try {

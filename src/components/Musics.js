@@ -11,7 +11,7 @@ import {
   deleteMusicSuccess,
   deleteMusicFailure,
 } from "../musicactions/musicsservice";
-
+import styled from "styled-components";
 import "./Musics.css";
 
 class Musics extends Component {
