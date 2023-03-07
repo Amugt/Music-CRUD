@@ -148,10 +148,35 @@ svg {
     display: flex;
     flex-direction: column-reverse;
     gap: 10px;
+    width: 800px;
+}
+
+@media screen and (max-width: 700px) {
+    .music-list-container {
+        width: 100%;
+        overflow-x: scroll;
+    }
+    .Artist {
+        width: 100px;
+    }
+    .Title {
+        width: 100px;
+    }
+    .edit-list,
+    .delete-list {
+        background-color: transparent;
+        font-size: 12px;
+        color: gray;
+        border: none;
+        width: 30px;
+    }
+    .music-list-img {
+        width: 30px;
+        height: 30px;
+    }
 }
 
 .music-list {
-    width: 800px;
     display: flex;
     flex-direction: row;
     gap: 10px;
