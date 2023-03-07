@@ -1,9 +1,9 @@
 #This is music CRUD project using
 
-● ReactJS: To build your user interface.
-● Redux Toolkit: To manage the state of your app.
-● Redux - Saga: To make calls to your REST API.
-● Emotion and Styled system: To style your app.
+#● ReactJS: To build the user interface.
+#● Redux Toolkit: To manage the state of the app.
+#● Redux - Saga: To make calls REST API.
+#● Emotion and Styled system: To style the app.
 
 # Getting Started with Create React App
 

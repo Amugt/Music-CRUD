@@ -107,7 +107,7 @@ class Musics extends Component {
             );
           })}
         </div>
-        <hr></hr>
+        <div className="divider"></div>
         <div className="header">Music List By Artist</div>
         <div className="music-list-container">
           {musics.map((music, index) => {
