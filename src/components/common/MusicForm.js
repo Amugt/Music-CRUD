@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import joi from "joi";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
+import "./MusicForm.css";
 
 import {
   addMusicRequest,
@@ -86,75 +87,77 @@ const MusicForm = () => {
   };
 
   const genreOptions = [
-    { value: "pop", label: "Pop" },
-    { value: "rock", label: "Rock" },
-    { value: "jazz", label: "Jazz" },
-    { value: "blues", label: "Blues" },
-    { value: "country", label: "Country" },
+    { value: "African", label: "African" },
+    { value: "Blues", label: "Blues" },
+    { value: "Electronic", label: "Electronic" },
+    { value: "Ethiopian", label: "Ethiopian" },
+    { value: "Jazz", label: "Jazz" },
+    { value: "Pop", label: "Pop" },
+    { value: "Rap", label: "Rap" },
+    { value: "reggae", label: "reggae" },
+    { value: "Rock", label: "Rock" },
+    { value: "Other", label: "Other" },
   ];
 
   return (
-    <div className="Full Screen">
-      {loading && <p>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          Music details
+    <div className="Full-Screen">
+      <div>
+        {loading && <p>{error}</p>}
+        <form onSubmit={handleSubmit}>
           <div>
-            <input
-              type="text"
-              name="title"
-              className="input"
-              value={data.title}
-              onChange={handleChange}
-            />
-            {errors.title && (
-              <div className="alert alert-danger">{errors.title}</div>
-            )}
-          </div>
-          <div>
-            <input
-              type="text"
-              name="artist"
-              className="input"
-              value={data.artist}
-              onChange={handleChange}
-            />
-            {errors.artist && (
-              <div className="alert alert-danger">{errors.artist}</div>
-            )}
-          </div>
-          <div>
-            <label htmlFor="genre" className="form-label">
-              Genre
-            </label>
-            <select
-              id="genre"
-              name="genre"
-              className="form-select"
-              value={data.genre}
-              onChange={handleChange}
-              required
+            Enter Music details
+            <div>
+              <input
+                type="text"
+                name="title"
+                className="input"
+                placeholder="Enter Music title here"
+                value={data.title}
+                onChange={handleChange}
+              />
+              {errors.title && <div className="">{errors.title}</div>}
+            </div>
+            <div>
+              <input
+                type="text"
+                name="artist"
+                className="input"
+                placeholder="Enter Artist Name here"
+                value={data.artist}
+                onChange={handleChange}
+              />
+              {errors.artist && <div className="">{errors.artist}</div>}
+            </div>
+            <div>
+              <select
+                id="genre"
+                name="genre"
+                className="form-select"
+                value={data.genre}
+                onChange={handleChange}
+                required
+              >
+                <option>Select Genre</option>
+                {genreOptions.map((option) => (
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              {errors.genre && (
+                <div className="alert alert-danger">{errors.genre}</div>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="Add-Update-btn"
+              disabled={Object.keys(errors).length > 0}
             >
-              <option value="">Select Genre</option>
-              <option value="Rock">Rock</option>
-              <option value="Pop">Pop</option>
-              <option value="Hip Hop">Hip Hop</option>
-              <option value="Jazz">Jazz</option>
-              <option value="Electronic">Electronic</option>
-            </select>
-            {errors.genre && (
-              <div className="alert alert-danger">{errors.genre}</div>
-            )}
+              {id === "new" ? "Add Music" : "Update"}
+            </button>
           </div>
-          <button
-            type="submit"
-            className=" "
-            disabled={Object.keys(errors).length > 0}
-          >
-            {id === "new" ? "Add Music" : "Update"}
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };

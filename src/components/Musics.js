@@ -41,27 +41,99 @@ class Musics extends Component {
 
     return (
       <div className="container">
-        <div className="Add-music">
-          <Link to="/musics/new">
-            <button>Add new Music</button>
-          </Link>
-        </div>
-        <div className="musics-container" component="div">
+        <div class="navbar"> Music CRUD</div>
+        <div className="header">Playlists</div>
+
+        <div className="musics-container">
+          <div className="add-music">
+            <div>
+              <Link to="/musics/new">
+                <div class="Add-Svg">
+                  <svg
+                    fill="white"
+                    viewBox="0 0 1920 1920"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      {" "}
+                      <path
+                        d="M915.744 213v702.744H213v87.842h702.744v702.744h87.842v-702.744h702.744v-87.842h-702.744V213z"
+                        fill-rule="evenodd"
+                      ></path>{" "}
+                    </g>
+                  </svg>
+                </div>
+                <div className="Add-New">Add New</div>
+              </Link>
+            </div>
+          </div>
+
           {musics.map((music, index) => {
             return (
               <div className="music" key={music.id}>
-                <h6>{index + 1}</h6>
-                <h5>{music.title}</h5>
-                <h5>{music.artist}</h5>
+                <div className="music-info">
+                  <img
+                    src={`${process.env.PUBLIC_URL}/covers/${music.genre}.png`}
+                    alt="Music cover"
+                  />
+
+                  <div className="music-title"> {music.title}</div>
+                  <div className="artist-name">{music.artist} </div>
+                </div>
+
+                <div className="btn-container">
+                  <div>
+                    <Link to={`/musics/${music.id}`}>
+                      <button className="edit-btn">Edit</button>
+                    </Link>
+                  </div>
+                  <div>
+                    <button
+                      className="delete-btn"
+                      onClick={() => this.deletingMusic(music.id)}
+                    >
+                      {" "}
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <hr></hr>
+        <div className="header">Music List By Artist</div>
+        <div className="music-list-container">
+          {musics.map((music, index) => {
+            return (
+              <div className="music-list" key={music.id}>
+                <div className="music-list-img">
+                  <img
+                    src={`${process.env.PUBLIC_URL}/covers/${music.genre}.png`}
+                    alt="Music cover"
+                  />
+                </div>
+                <div className="Artist">{music.artist}</div>
+                <div className="Title">{music.title} </div>
+
                 <div>
                   <Link to={`/musics/${music.id}`}>
-                    <button>edit</button>
+                    <button className="edit-list">Edit</button>
                   </Link>
                 </div>
                 <div>
-                  <button onClick={() => this.deletingMusic(music.id)}>
+                  <button
+                    className="delete-list"
+                    onClick={() => this.deletingMusic(music.id)}
+                  >
                     {" "}
-                    delete
+                    Delete
                   </button>
                 </div>
               </div>
@@ -74,7 +146,7 @@ class Musics extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  musics: allmusic(state).data, // select the music data from the state
+  musics: allmusic(state).data,
 });
 
 const mapDispatchToProps = {

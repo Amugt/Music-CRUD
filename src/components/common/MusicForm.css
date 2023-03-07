@@ -1,0 +1,44 @@
+.Full-Screen {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input {
+    width: 270px;
+    height: 40px;
+    margin-top: 10px;
+    border: none;
+}
+
+select {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: none;
+    height: 35px;
+    padding: 0 5px 0 0;
+    margin: 10;
+    width: 100%;
+}
+
+select:hover {
+    cursor: pointer;
+}
+
+.Add-Update-btn {
+    font-size: 15px;
+    border-radius: 5px;
+    width: 100px;
+    height: 40px;
+    padding-left: 10px;
+    border: none;
+    background-color: #1d96ce;
+    color: white;
+    align-self: center;
+}
+
+.Add-Update-btn:hover {
+    cursor: pointer;
+    background-color: #167baa;
+}

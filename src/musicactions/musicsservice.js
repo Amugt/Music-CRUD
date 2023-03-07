@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Redux Toolkit slice for music data
 const musicSlice = createSlice({
   name: "music",
   initialState: {
@@ -76,7 +75,6 @@ const musicSlice = createSlice({
   },
 });
 
-// Redux Toolkit actions
 export const {
   getMusicRequest,
   getMusicSuccess,
